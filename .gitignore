@@ -1,0 +1,12 @@
+# related to python
+__pycache__/
+.idea/
+.ipynb_checkpoints/
+
+# related to the personal note
+计算图.md
+assets/
+
+# the MNIST dataset
+MNIST_dataset/
+
