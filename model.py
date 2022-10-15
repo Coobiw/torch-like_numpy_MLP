@@ -9,9 +9,8 @@ class MLP(Module):
         assert n_layers == len(dim_list)-1, 'the length of dim_list param should be equal to n_layers'
         self.layers = []
         for i in range(n_layers):
-            name = 'linear{}'.format(i+1)
-            setattr(self, name, Linear(dim_list[i], dim_list[i+1]))
-            self.layers.append(getattr(self, name))
+            self.layers.append(Linear(dim_list[i],dim_list[i+1]))
+
         self.layers.append(CrossEntropyLoss())
         self.relu = ReLU()
         self.input_list = []
@@ -59,6 +58,22 @@ class MLP(Module):
         # 释放中间正向传播的计算变量
         self.input_list = []
 
+    def state_dict(self):
+        state_dict = {}
+        for i,layer in enumerate(self.layers):
+            if not isinstance(layer,CrossEntropyLoss):
+                name = f'linear_{i+1}'
+                state_dict[name+'_weight'] = layer.weight.value
+                state_dict[name+'_bias'] = layer.bias.value
+        return state_dict
+
+    def load_state_dict(self,state_dict):
+        for i,layer in enumerate(self.layers):
+            if not isinstance(layer,CrossEntropyLoss):
+                name = f'linear_{i+1}'
+                assert not state_dict.get(name+'_weight',None) is None,"the architecture of model doesn't match the state_dict"
+                self.layers[i].weight = Tensor(value=state_dict[name+'_weight'])
+                self.layers[i].bias = Tensor(value = state_dict[name+'_bias'])
 
 
 
@@ -75,5 +90,12 @@ if __name__ == '__main__':
     print(b)
     mlp.backward(target)
     print(len(mlp.input_list))
+    # from train import save_model
+    # save_model(mlp,'test')
+    # new_mlp = MLP()
+    # import pickle
+    # with open('test.qbw','rb') as f:
+    #     state_dict = pickle.load(f)
+    # new_mlp.load_state_dict(state_dict)
 
 

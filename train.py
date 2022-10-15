@@ -11,6 +11,7 @@ from tensor import Tensor
 import logging
 import os
 import matplotlib.pyplot as plt
+import pickle
 
 SEED = 729608
 random.seed(SEED)
@@ -23,6 +24,7 @@ def augment_parser():
     parser.add_argument('--lr',type=float,default=cfg.lr)
     parser.add_argument('--batch-size',type=int,default=cfg.batch_size)
     parser.add_argument('--log-dir',type=str,default='./log/')
+    parser.add_argument('--save-dir',type=str,default='./model/')
 
     return parser
 
@@ -44,8 +46,9 @@ def main():
     log_dir = args.log_dir
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-        # os.system(f'touch {log_dir + "train.log"}')
-        # os.system(f'touch {log_dir + "test.log"}')
+
+    if not os.path.exists(args.save_dir):
+        os.makedirs(args.save_dir)
 
     train_loss_list = []
     train_acc_list = []
@@ -63,6 +66,8 @@ def main():
         test_loss_list.append(test_loss)
         test_acc_list.append(test_acc)
 
+    save_name = args.save_dir + 'mlp_epoch' + str(args.epochs)
+    save_model(mlp,save_name)
     plt.subplot(1,2,1)
     plt.xlabel('epoch')
     plt.ylabel('loss')
@@ -140,6 +145,9 @@ def test_epoch(test_data,test_label,mlp,cur_epoch,log_file):
     logging.info(log_info)
     return test_loss.avg, test_acc.avg
 
+def save_model(model:MLP,name:str):
+    with open(name+'.qbw','wb') as f:
+        pickle.dump(model.state_dict(),f)
 
 if __name__ == "__main__":
     main()
