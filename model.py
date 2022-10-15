@@ -72,6 +72,7 @@ class MLP(Module):
             if not isinstance(layer,CrossEntropyLoss):
                 name = f'linear_{i+1}'
                 assert not state_dict.get(name+'_weight',None) is None,"the architecture of model doesn't match the state_dict"
+                assert layer.weight.value.shape == state_dict[name+'_weight'].shape,"the layers of model doesn't match the state_dict"
                 self.layers[i].weight = Tensor(value=state_dict[name+'_weight'])
                 self.layers[i].bias = Tensor(value = state_dict[name+'_bias'])
 

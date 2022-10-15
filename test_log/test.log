@@ -1,0 +1,2 @@
+2022-10-15 20:45:04,461 - test.py[line:68] - INFO: Test Model Path: ./model/model3/mlp_epoch50.qbw --- test loss : 0.0803518610960779 --- test accuracy:0.9763
+2022-10-15 20:50:12,056 - test.py[line:68] - INFO: Test Model Path: ./model/model3/mlp_epoch50.qbw --- test loss : 0.0803518610960779 --- test accuracy:0.9763

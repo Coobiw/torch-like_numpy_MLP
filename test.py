@@ -57,7 +57,7 @@ def main():
         format=LOG_FMT
     )
 
-    for i in range(test_data.shape[0]):
+    for i in tqdm(range(test_data.shape[0])):
         data, label = test_data[i].reshape(1,-1),test_label[i].reshape(1,-1)
         data = Tensor(value=data)
         pred, loss = mlp(data,label)
