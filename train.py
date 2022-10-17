@@ -25,6 +25,8 @@ def augment_parser():
     parser.add_argument('--batch-size',type=int,default=cfg.batch_size)
     parser.add_argument('--log-dir',type=str,default='./log/')
     parser.add_argument('--save-dir',type=str,default='./model/')
+    parser.add_argument('--nl',type=int,default=2,help='num of layers')
+    parser.add_argument('--dim-list',type=int,nargs='+',default=[28*28,512])
 
     return parser
 
@@ -40,7 +42,7 @@ def main():
     args = parser.parse_args()
     dataset = MNIST_Dataset()
     train_data,test_data,train_label,test_label = dataset.train_data,dataset.test_data,dataset.train_label,dataset.test_label
-    mlp = MLP()
+    mlp = MLP(n_layers=args.nl,n_class=10,dim_list=args.dim_list)
     optimizer = SGD(mlp.layers[:-1], args.lr)
 
     log_dir = args.log_dir

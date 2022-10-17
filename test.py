@@ -18,6 +18,8 @@ def augment_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-path',type=str)
     parser.add_argument('--test-log-dir',type=str,default='./test_log/')
+    parser.add_argument('--nl',type=int,default=2,help='num of layers')
+    parser.add_argument('--dim-list',type=int,nargs='+',default=[28*28,512])
 
     return parser
 
@@ -37,7 +39,7 @@ def main():
     if not os.path.exists(args.test_log_dir):
         os.makedirs(args.test_log_dir)
 
-    mlp = MLP()
+    mlp = MLP(n_layers=args.nl,n_class=10,dim_list=args.dim_list)
     with open(args.model_path,'rb') as f:
         state_dict = pickle.load(f)
     mlp.load_state_dict(state_dict)
