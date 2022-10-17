@@ -6,7 +6,7 @@ test_label_path = "./MNIST_dataset/t10k-labels-idx1-ubyte"
 
 # default of the hyper parameter
 epoch = 50
-lr = 5e-2
+lr = 1e-2
 batch_size = 256
 
 # 解析MNIST数据集
