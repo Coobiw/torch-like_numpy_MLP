@@ -35,9 +35,9 @@ class Linear(Module):
     def backward(self,in_feat:Ndarray,in_grad:Ndarray):
         batch_size = in_feat.shape[0]
         self.bias.grad = in_grad.reshape(batch_size,1,-1)
-        self.bias.grad = self.bias.grad.mean(axis=0)
+        self.bias.grad = self.bias.grad.sum(axis=0)
         self.weight.grad = in_feat.reshape(batch_size,-1,1) @ in_grad.reshape(batch_size,1,-1)
-        self.weight.grad = self.weight.grad.mean(axis=0)
+        self.weight.grad = self.weight.grad.sum(axis=0)
         hidden_grad = in_grad @ self.weight.value.T
         return hidden_grad
 
