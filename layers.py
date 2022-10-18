@@ -53,7 +53,9 @@ class CrossEntropyLoss(Module): # 连带softmax
         return self.nll(prob_value,target)
 
     def backward(self,target):
+        batch_size = target.shape[0]
         self.prob.grad = self.prob.value - target
+        self.prob.grad /= batch_size
         return self.prob.grad
 
     @staticmethod
